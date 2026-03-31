@@ -12,7 +12,7 @@ export default function Header() {
         <header>
             <div className="main-container inner">
                 <Link href="/">
-                    <Image src="" alt="logo" width={132} height={40} />
+                    <Image src="/HOME-removebg-preview.png" alt="logo" width={132} height={40} />
                 </Link>
 
                 <nav>

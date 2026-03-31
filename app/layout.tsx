@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono, Montserrat, Inter } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
-import Header from "@/components/Header";
+import Header from "@/components/ui/Header";
 
 const interHeading = Inter({subsets:['latin'],variable:'--font-heading'});
 

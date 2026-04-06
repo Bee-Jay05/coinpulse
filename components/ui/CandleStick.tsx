@@ -18,7 +18,6 @@ export default function CandleStick({
 	const chartRef = useRef<IChartApi | null>(null);
 	const candleSeriesRef = useRef<ISeriesApi<"Candlestick"> | null>(null);
   
-	const [loading, setLoading] = useState(false);
 	const [period, setPeriod] = useState(initialPeriod);
 	const [OhlcData, setOhlcData] = useState<OHLCData[]>(data ?? []);
 	const [isPending, startTransition] = useTransition();
@@ -60,7 +59,10 @@ export default function CandleStick({
 		});
 
 		const series = chart.addSeries(CandlestickSeries, getCandlestickConfig());
-		series.setData(convertOHLCData(OhlcData));
+		const convertedToSeconds = OhlcData.map(
+			(item) => [Math.floor(item[0] / 1000), item[1], item[2], item[3], item[4]] as OHLCData,
+		);
+		series.setData(convertOHLCData(convertedToSeconds));
 		chart.timeScale().fitContent();
 
 		chartRef.current = chart;
@@ -85,7 +87,7 @@ export default function CandleStick({
 			candleSeriesRef.current = null
 		};
 
-	}, [height]);
+	}, [height, period]);
 
 	useEffect(() => {
 		if (!candleSeriesRef.current) return;
@@ -106,7 +108,7 @@ export default function CandleStick({
 				<div className="button-group">
 					<span className="text-sm mx-2 font-medium text-purple-100/50">Period:</span>
 					{PERIOD_BUTTONS.map(({ value, label }) => (
-						<button className={period === value ? 'config-button-active' : 'config-button'} key={value} onClick={() => handlePeriodChange(value)} disabled={loading}>
+						<button className={period === value ? 'config-button-active' : 'config-button'} key={value} onClick={() => handlePeriodChange(value)} disabled={isPending}>
 							{label}
 						</button>
 					) )}
